@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizForAndroid.API", "QuizF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizForAndroid.DAL", "QuizForAndroid.DAL\QuizForAndroid.DAL.csproj", "{317B279C-FD57-4807-9DFD-A89AC893BCE1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizForAndroid.BAL", "QuizForAndroid.BAL\QuizForAndroid.BAL.csproj", "{A1D92806-8AA6-43A0-B21F-E6D099849382}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizForAndroid.BLL", "QuizForAndroid.BAL\QuizForAndroid.BLL.csproj", "{A1D92806-8AA6-43A0-B21F-E6D099849382}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\QuizForAndroid.BAL\QuizForAndroid.BAL.csproj" />
+    <ProjectReference Include="..\QuizForAndroid.BAL\QuizForAndroid.BLL.csproj" />
   </ItemGroup>
 
 </Project>

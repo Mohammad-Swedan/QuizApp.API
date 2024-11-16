@@ -1,4 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using QuizForAndroid.BAL.GenericBase;
+using QuizForAndroid.BLL.MappingProfiles.eCampus_Prototype.BLL;
+using QuizForAndroid.BLL.ServiceInterfaces;
+using QuizForAndroid.BLL.Services;
 using QuizForAndroid.DAL.Abstracts;
 using QuizForAndroid.DAL.Contexts;
 using QuizForAndroid.DAL.GenericBase;
@@ -33,6 +37,27 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // Register the generic repository if needed
 builder.Services.AddScoped(typeof(IGenericRepositoryAsync<>), typeof(GenericRepositoryAsync<>));
+
+// Regoster the generic service
+//builder.Services.AddScoped(typeof(IGenericServiceAsync<>), typeof(GenericServiceAsync<,>));
+
+// Register Serivces
+//builder.Services.AddScoped<IUserService, UserService>(); // TODO : impliment user services...
+builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<IUniversityService, UniversityService>();
+builder.Services.AddScoped<ICollegeService, CollegeService>();
+builder.Services.AddScoped<ISpecializationService, SpecializationService>();
+builder.Services.AddScoped<IMaterialService, MaterialService>();
+builder.Services.AddScoped<IQuizService, QuizService>();
+builder.Services.AddScoped<IQuestionService, QuestionService>();
+builder.Services.AddScoped<IChoiceService, ChoiceService>();
+builder.Services.AddScoped<IQuizLikesDislikesService, QuizLikesDislikesService>();
+builder.Services.AddScoped<IWriterApplicationService, WriterApplicationService>();
+
+// Register mapping profile
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
+
 
 
 builder.Services.AddControllers();
