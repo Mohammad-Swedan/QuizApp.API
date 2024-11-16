@@ -3,6 +3,7 @@ using QuizForAndroid.DAL.Abstracts;
 using QuizForAndroid.DAL.Contexts;
 using QuizForAndroid.DAL.GenericBase;
 using QuizForAndroid.DAL.Repositories;
+using QuizForAndroid.DAL.UnitOfWork;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,9 @@ builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
 builder.Services.AddScoped<IChoiceRepository, ChoiceRepository>();
 builder.Services.AddScoped<IQuizLikesDislikesRepository, QuizLikesDislikesRepository>();
 builder.Services.AddScoped<IWriterApplicationRepository, WriterApplicationRepository>();
+
+// Register unit of work ......
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // Register the generic repository if needed
 builder.Services.AddScoped(typeof(IGenericRepositoryAsync<>), typeof(GenericRepositoryAsync<>));
