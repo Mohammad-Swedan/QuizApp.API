@@ -30,6 +30,7 @@ namespace QuizForAndroid.BLL.MappingProfiles
                 CreateMap<WriterApplication, WriterApplicationDTO>().ReverseMap();
                 CreateMap<User, AddUserDTO>().ReverseMap();
                 CreateMap<User, GetUserDTO>().ReverseMap();
+                CreateMap<User, RegisterDTO>().ReverseMap();
 
                 // Additional mappings
             }

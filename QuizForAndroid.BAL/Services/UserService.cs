@@ -27,7 +27,7 @@ namespace QuizForAndroid.BLL.Services
             _tokenService = tokenService;
             _userRepository = userRepository;
             _mapper = mapper;
-            //_userRoleService = userRoleService;
+            _roleService = roleService;
         }
 
         public async Task<AddUserDTO> RegisterUserAsync(RegisterDTO model)
@@ -49,14 +49,14 @@ namespace QuizForAndroid.BLL.Services
             user.LastName = model.LastName;
             user.IsTrusted = false;
             user.IsDoctor = false;
+
             //user.FailedLoginAttempts = 0;
             //TODO : add created date
             //user.CreatedDate = DateTime.UtcNow;
+            user.RoleId = 1; // 1 : User (2 : Writer , 3 : Admin , 4 : SuperAdmin)
 
             await _userRepository.AddAsync(user);
 
-            // User is the default Role ...
-            model.RoleId = 1; // 1 : User (2 : Writer , 3 : Admin , 4 : SuperAdmin)
 
             return  _mapper.Map<AddUserDTO>(await _userRepository.FindByEmailAsync(user.Email));
         }
@@ -100,6 +100,14 @@ namespace QuizForAndroid.BLL.Services
         {
             var result = _userRepository.FindByEmailAsync(email);
             return result!;
+        }
+
+        public async Task AssignRoleAsync(User user,int roleId)
+        {
+            var role = await _roleService.GetByIdAsync(roleId);
+
+            user.RoleId = role.RoleID;
+            await _userRepository.UpdateAsync(user);
         }
 
         

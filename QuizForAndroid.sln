@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizForAndroid.API", "QuizForAndroid\QuizForAndroid.API.csproj", "{7A137DED-A447-4675-8BF8-188762436F71}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuizForAndroid.API", "QuizForAndroid\QuizForAndroid.API.csproj", "{7A137DED-A447-4675-8BF8-188762436F71}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizForAndroid.DAL", "QuizForAndroid.DAL\QuizForAndroid.DAL.csproj", "{317B279C-FD57-4807-9DFD-A89AC893BCE1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuizForAndroid.DAL", "QuizForAndroid.DAL\QuizForAndroid.DAL.csproj", "{317B279C-FD57-4807-9DFD-A89AC893BCE1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizForAndroid.BLL", "QuizForAndroid.BAL\QuizForAndroid.BLL.csproj", "{A1D92806-8AA6-43A0-B21F-E6D099849382}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuizForAndroid.BLL", "QuizForAndroid.BAL\QuizForAndroid.BLL.csproj", "{A1D92806-8AA6-43A0-B21F-E6D099849382}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
