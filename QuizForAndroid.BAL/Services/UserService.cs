@@ -1,4 +1,7 @@
 ﻿using AutoMapper;
+using eCampus_Prototype.BLL.Helpers;
+using eCampus_Prototype.BLL.ServiceInterfaces;
+using QuizForAndroid.BAL.GenericBase;
 using QuizForAndroid.BLL.ServiceInterfaces;
 using QuizForAndroid.DAL.Abstracts;
 using QuizForAndroid.DAL.DTOs;
@@ -11,72 +14,94 @@ using System.Threading.Tasks;
 
 namespace QuizForAndroid.BLL.Services
 {
-    public class UserService //: GenericService<User, UserDto>, IUserService
+    public class UserService : GenericServiceAsync<User, UserDTO>, IUserService
     {
-        //private readonly IUserRepository _userRepository;
-        //private readonly IMapper _mapper;
-        //private readonly ITokenService _tokenService;
-        //private readonly IUserRoleService _userRoleService;
+        private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
+        private readonly ITokenService _tokenService;
+        private readonly IRoleService _roleService;
 
-        //public UserService(IUserRepository userRepository, IMapper mapper, IUserRoleService userRoleService, ITokenService tokenService)
-        //    : base(userRepository, mapper)
-        //{
-        //    _userRepository = userRepository;
-        //    _mapper = mapper;
-        //    _userRoleService = userRoleService;
-        //    _tokenService = tokenService;
-        //}
+        public UserService(IUserRepository userRepository, IMapper mapper, IRoleService roleService, ITokenService tokenService)
+            : base(userRepository, mapper)
+        {
+            _tokenService = tokenService;
+            _userRepository = userRepository;
+            _mapper = mapper;
+            //_userRoleService = userRoleService;
+        }
 
-        //public async Task<UserDTO> FindByEmailAsync(string email)
-        //{
-        //    var user = await _userRepository.FindByEmailAsync(email);
-        //    return _mapper.Map<UserDTO>(user);
-        //}
+        public async Task<AddUserDTO> RegisterUserAsync(RegisterDTO model)
+        {
+            var existingUser = await _userRepository.FindByEmailAsync(model.Email);
+            if (existingUser != null)
+                throw new ApplicationException($"User with email '{model.Email}' already exists.");
 
-        //public async Task<UserPublicDto> RegisterUserAsync(RegisterDTO model)
-        //{
-        //    var existingUser = await _userRepository.FindByEmailAsync(model.Email);
-        //    if (existingUser != null)
-        //        throw new ApplicationException($"User with email '{model.Email}' already exists.");
+            var user = _mapper.Map<User>(model);
 
-        //    var user = _mapper.Map<User>(model);
+            PasswordHelper.CreatePasswordHash(model.Password, out byte[] passwordSalt, out byte[] passwordHash);
+            user.PasswordHash = passwordHash;
+            user.PasswordSalt = passwordSalt;
 
-        //    PasswordHelper.CreatePasswordHash(model.Password, out byte[] passwordSalt, out byte[] passwordHash);
-        //    user.PasswordHash = passwordHash;
-        //    user.PasswordSalt = passwordSalt;
+            // validate password later .........
 
-        //    // Additional user initialization
-        //    user.FirstName = model.FirstName;
-        //    user.LastName = model.LastName;
-        //    user.IsTrusted = false;
-        //    user.IsDoctor = false;
-            
-        //    //TODO : Add created date
-        //    //user.CreatedDate = DateTime.UtcNow;
+            // edite later
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.IsTrusted = false;
+            user.IsDoctor = false;
+            //user.FailedLoginAttempts = 0;
+            //TODO : add created date
+            //user.CreatedDate = DateTime.UtcNow;
 
-        //    await _userRepository.AddAsync(user);
-        //    await _userRoleService.AssignRoleToUserAsync("User", user);
+            await _userRepository.AddAsync(user);
 
-        //    //change UserPublic DTO
-        //    return _mapper.Map<UserPublicDto>(user);
-        //}
+            // User is the default Role ...
+            model.RoleId = 1; // 1 : User (2 : Writer , 3 : Admin , 4 : SuperAdmin)
 
-        //public async Task<string> AuthenticateUserAsync(LoginDTO model)
-        //{
-        //    var user = await _userRepository.FindByEmailAsync(model.Email);
-        //    if (user == null)
-        //        throw new UnauthorizedAccessException("Invalid email or password.");
+            return  _mapper.Map<AddUserDTO>(await _userRepository.FindByEmailAsync(user.Email));
+        }
 
-        //    if (!PasswordHelper.VerifyPasswordHash(model.Password, user.PasswordHash, user.PasswordSalt))
-        //        throw new UnauthorizedAccessException("Invalid email or password.");
+        public async Task<string> AuthenticateUserAsync(LoginDTO model)
+        {
+            var user = await _userRepository.FindByEmailAsync(model.Email);
+            if (user == null)
+                throw new UnauthorizedAccessException("Invalid email or password.");
 
-        //    // Fetch user roles
-        //    var roles = await _userRoleService.GetUserRolesAsync(user.UserID);
-        //    var roleNames = roles.Select(r => r.RoleName).ToList();
+            if (!PasswordHelper.VerifyPasswordHash(model.Password, user.PasswordHash, user.PasswordSalt))
+                throw new UnauthorizedAccessException("Invalid email or password.");
 
-        //    // Generate JWT token
-        //    var token = await _tokenService.GenerateJwtTokenAsync(user, roleNames);
-        //    return token;
-        //}
+            // Fetch user roles
+            int roleId = user.RoleId;
+            List<string> roleNames = new List<string>();
+
+            switch(roleId)
+            {
+                case 4:
+                    roleNames.Add("SuperAdmin");
+                    goto case 3;
+                case 3:
+                    roleNames.Add("Admin");
+                    goto case 2;
+                case 2:
+                    roleNames.Add("Writer");
+                    goto case 1;
+                case 1:
+                    roleNames.Add("User");
+                    break;
+            }
+
+
+            // Generate JWT token using TokenService
+            var token = await _tokenService.GenerateJwtTokenAsync(user, roleNames);
+            return token;
+        }
+
+        public Task<User> FindByEmailAsync(string email)
+        {
+            var result = _userRepository.FindByEmailAsync(email);
+            return result!;
+        }
+
+        
     }
 }

@@ -1,5 +1,5 @@
 ﻿// BLL/ServiceInterfaces/ITokenService.cs
-using eCampus_Prototype.DAL.Entities;
+using QuizForAndroid.DAL.Entities;
 using System.Threading.Tasks;
 
 namespace eCampus_Prototype.BLL.ServiceInterfaces

@@ -39,6 +39,7 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped(typeof(IGenericRepositoryAsync<>), typeof(GenericRepositoryAsync<>));
 
 // Regoster the generic service
+// There is an error (number of generic prams dismatch.
 //builder.Services.AddScoped(typeof(IGenericServiceAsync<>), typeof(GenericServiceAsync<,>));
 
 // Register Serivces

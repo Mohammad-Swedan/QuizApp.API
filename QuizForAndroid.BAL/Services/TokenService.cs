@@ -1,6 +1,5 @@
 ﻿// BLL/Services/TokenService.cs
 using eCampus_Prototype.BLL.ServiceInterfaces;
-using eCampus_Prototype.DAL.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -9,6 +8,8 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using System.IdentityModel.Tokens.Jwt;
+using QuizForAndroid.DAL.Entities;
+using Microsoft.VisualBasic;
 
 namespace eCampus_Prototype.BLL.Services
 {
@@ -20,6 +21,7 @@ namespace eCampus_Prototype.BLL.Services
         {
             _configuration = configuration;
         }
+
 
         public async Task<string> GenerateJwtTokenAsync(User user, IEnumerable<string> roles)
         {
@@ -39,9 +41,9 @@ namespace eCampus_Prototype.BLL.Services
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                new Claim(ClaimTypes.Name, user.FullName),
+                new Claim(ClaimTypes.Name, user.FirstName + user.LastName),
                 new Claim(ClaimTypes.Email, user.Email),
-                new Claim("DateOfBirth", user.DateOfBirth.ToString("yyyy-MM-dd")),
+                //new Claim("DateOfBirth", user.DateOfBirth.ToString("yyyy-MM-dd")),
                 //new Claim("Gender", (user.Gender ? "Male" : "Female")),
                 new Claim("TokenId", Guid.NewGuid().ToString())  // Add GUID as a custom claim
             };
