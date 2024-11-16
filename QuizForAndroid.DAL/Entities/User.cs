@@ -26,6 +26,9 @@ public partial class User
     public string Email { get; set; } = null!;
 
     public byte[] PasswordHash { get; set; } = null!;
+    public byte[] PasswordSalt { get; set; } = null!;
+    
+
 
     [Column("UniversityID")]
     public int UniversityId { get; set; }
