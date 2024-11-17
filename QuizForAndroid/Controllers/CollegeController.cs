@@ -92,7 +92,7 @@ namespace QuizForAndroid.API.Controllers
         [HttpPost(Name = "CreateCollege")]
         [ProducesResponseType(typeof(CollegeDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(object), StatusCodes.Status400BadRequest)]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, SuperAdmin")]
         public async Task<IActionResult> CreateCollege([FromBody] CollegeDTO model)
         {
             /// <summary>
@@ -124,7 +124,7 @@ namespace QuizForAndroid.API.Controllers
         [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(object), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(object), StatusCodes.Status404NotFound)]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, SuperAdmin")]
         public async Task<IActionResult> UpdateCollege(int id, [FromBody] CollegeDTO model)
         {
             /// <summary>
@@ -159,7 +159,7 @@ namespace QuizForAndroid.API.Controllers
         [HttpDelete("{id}", Name = "DeleteCollege")]
         [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(object), StatusCodes.Status404NotFound)]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, SuperAdmin")]
         public async Task<IActionResult> DeleteCollege(int id)
         {
             /// <summary>

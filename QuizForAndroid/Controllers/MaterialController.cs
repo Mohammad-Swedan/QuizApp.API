@@ -92,7 +92,7 @@ namespace QuizForAndroid.API.Controllers
         [HttpPost(Name = "CreateMaterial")]
         [ProducesResponseType(typeof(MaterialDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(object), StatusCodes.Status400BadRequest)]
-        [Authorize(Roles = "Admin, Editor")]
+        [Authorize(Roles = "Admin, SuperAdmin")]
         public async Task<IActionResult> CreateMaterial([FromBody] MaterialDTO model)
         {
             /// <summary>
@@ -124,7 +124,7 @@ namespace QuizForAndroid.API.Controllers
         [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(object), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(object), StatusCodes.Status404NotFound)]
-        [Authorize(Roles = "Admin, Editor")]
+        [Authorize(Roles = "Admin, SuperAdmin")]
         public async Task<IActionResult> UpdateMaterial(int id, [FromBody] MaterialDTO model)
         {
             /// <summary>
@@ -159,7 +159,7 @@ namespace QuizForAndroid.API.Controllers
         [HttpDelete("{id}", Name = "DeleteMaterial")]
         [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(object), StatusCodes.Status404NotFound)]
-        [Authorize(Roles = "Admin, Editor")]
+        [Authorize(Roles = "Admin, SuperAdmin")]
         public async Task<IActionResult> DeleteMaterial(int id)
         {
             /// <summary>

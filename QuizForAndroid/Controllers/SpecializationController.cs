@@ -92,7 +92,7 @@ namespace QuizForAndroid.API.Controllers
         [HttpPost(Name = "CreateSpecialization")]
         [ProducesResponseType(typeof(SpecializationDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(object), StatusCodes.Status400BadRequest)]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, SuperAdmin")]
         public async Task<IActionResult> CreateSpecialization([FromBody] SpecializationDTO model)
         {
             /// <summary>
@@ -124,7 +124,7 @@ namespace QuizForAndroid.API.Controllers
         [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(object), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(object), StatusCodes.Status404NotFound)]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, SuperAdmin")]
         public async Task<IActionResult> UpdateSpecialization(int id, [FromBody] SpecializationDTO model)
         {
             /// <summary>
@@ -159,7 +159,7 @@ namespace QuizForAndroid.API.Controllers
         [HttpDelete("{id}", Name = "DeleteSpecialization")]
         [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(object), StatusCodes.Status404NotFound)]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, SuperAdmin")]
         public async Task<IActionResult> DeleteSpecialization(int id)
         {
             /// <summary>
