@@ -15,5 +15,8 @@ namespace QuizForAndroid.BLL.ServiceInterfaces
         Task<AddUserDTO> RegisterUserAsync(RegisterDTO model);
         Task<string> AuthenticateUserAsync(LoginDTO model);
         Task AssignRoleAsync(User user,int roleId);
+
+        //check it later
+        //Task<bool> UpdateUserAsync(int userId, EditUserDto model);
     }
 }

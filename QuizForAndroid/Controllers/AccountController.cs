@@ -138,23 +138,23 @@ namespace QuizForAndroid.API.Controllers
         /// <returns>The user details.</returns>
         /// <response code="200">Returns the user details.</response>
         /// <response code="404">If the user is not found.</response>
-        [HttpGet("{id}", Name = "GetUserById")]
-        [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(object), StatusCodes.Status404NotFound)]
-        [Authorize(Roles = "SuperAdmin, Admin")] // Example authorization
-        public async Task<IActionResult> GetUserById(int id)
-        {
-            /// <summary>
-            /// Retrieves a user by ID.
-            /// </summary>
-            /// <param name="id">User ID.</param>
-            /// <returns>ActionResult with user data.</returns>
-            var user = await _userService.GetByIdAsync(id);
-            if (user == null)
-                return NotFound(new { Message = $"User with ID: {id} not found!" });
+        //[HttpGet("{id}", Name = "GetUserById")]
+        //[ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
+        //[ProducesResponseType(typeof(object), StatusCodes.Status404NotFound)]
+        //[Authorize(Roles = "SuperAdmin, Admin")] // Example authorization
+        //public async Task<IActionResult> GetUserById(int id) // move it to user controller
+        //{
+        //    /// <summary>
+        //    /// Retrieves a user by ID.
+        //    /// </summary>
+        //    /// <param name="id">User ID.</param>
+        //    /// <returns>ActionResult with user data.</returns>
+        //    var user = await _userService.GetByIdAsync(id);
+        //    if (user == null)
+        //        return NotFound(new { Message = $"User with ID: {id} not found!" });
 
-            return Ok(user);
-        }
+        //    return Ok(user);
+        //}
 
         // Uncomment and implement if you need to add roles dynamically
         /*

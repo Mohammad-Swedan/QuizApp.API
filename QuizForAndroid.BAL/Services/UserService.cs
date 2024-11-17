@@ -90,7 +90,6 @@ namespace QuizForAndroid.BLL.Services
                     break;
             }
 
-
             // Generate JWT token using TokenService
             var token = await _tokenService.GenerateJwtTokenAsync(user, roleNames);
             return token;
@@ -104,12 +103,14 @@ namespace QuizForAndroid.BLL.Services
 
         public async Task AssignRoleAsync(User user,int roleId)
         {
+            if ((roleId > 3 || roleId < 1) || (user.RoleId == roleId))
+                return;
+
             var role = await _roleService.GetByIdAsync(roleId);
 
             user.RoleId = role.RoleID;
             await _userRepository.UpdateAsync(user);
         }
-
         
     }
 }
