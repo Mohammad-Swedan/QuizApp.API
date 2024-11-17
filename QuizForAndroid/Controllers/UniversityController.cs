@@ -13,6 +13,7 @@ namespace QuizForAndroid.API.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UniversityController : ControllerBase
     {
         private readonly IUniversityService _universityService;
