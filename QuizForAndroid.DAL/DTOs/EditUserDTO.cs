@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace QuizForAndroid.DAL.DTOs
 {
-    public class EditUserDto
+    public class EditUserDTO
     {
         /// <summary>
         /// New first name of the user.

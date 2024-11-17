@@ -111,6 +111,26 @@ namespace QuizForAndroid.BLL.Services
             user.RoleId = role.RoleID;
             await _userRepository.UpdateAsync(user);
         }
-        
+
+        public async Task<bool> UpdateAsync(int userId, EditUserDTO model)
+        {
+            var user = await _userRepository.GetByIdAsync(userId);
+
+            if (!PasswordHelper.VerifyPasswordHash(model.OldPassword, user.PasswordHash, user.PasswordSalt))
+                return false;
+
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.Email = model.Email;
+
+            PasswordHelper.CreatePasswordHash(model.NewPassword, out byte[] passwordSalt, out byte[] passwordHash);
+
+            user.PasswordHash = passwordHash;
+            user.PasswordSalt = passwordSalt;
+
+            await _userRepository.UpdateAsync(user);
+
+            return true;
+        }
     }
 }
