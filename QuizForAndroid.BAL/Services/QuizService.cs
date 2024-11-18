@@ -19,14 +19,16 @@ namespace QuizForAndroid.BLL.Services
     {
         private readonly IQuizRepository _quizRepository;
         private readonly IUnitOfWork _unitOfWork;
-        IChoiceRepository _choiceRepository;
+        private readonly IChoiceRepository _choiceRepository;
+        private readonly IQuizLikesDislikesRepository _quizLikesDislikesRepository;
 
-        public QuizService(IQuizRepository quizRepository ,IChoiceRepository choiceRepository ,IUnitOfWork unitOfWork ,IMapper mapper)
+        public QuizService(IQuizRepository quizRepository,IQuizLikesDislikesRepository quizLikesDislikesRepository ,IChoiceRepository choiceRepository ,IUnitOfWork unitOfWork ,IMapper mapper)
             : base(quizRepository, mapper)
         {
             _choiceRepository = choiceRepository;
             _unitOfWork = unitOfWork;
             _quizRepository = quizRepository;
+            _quizLikesDislikesRepository = quizLikesDislikesRepository;
         }
 
         public async Task<IEnumerable<QuizDTO>> GetQuizzesByMaterialAsync(int materialId)
@@ -118,7 +120,7 @@ namespace QuizForAndroid.BLL.Services
             }
         }
 
-        public async Task<FullQuizDTO> GetFullQuizByIdAsync(int quizId)
+        public async Task<FullQuizDTO> GetFullQuizByIdAsync(int quizId,int userId)
         {
             // Get quiz include Questions and Choices
             var quizEntity = await _quizRepository.GetFull(quizId);
@@ -126,10 +128,13 @@ namespace QuizForAndroid.BLL.Services
             if (quizEntity == null)
                 return null;
 
+            short likeStatus = await _quizLikesDislikesRepository
+                    .GetLikeStatusAsync(quizEntity.QuizId,userId);
+
             var result = new FullQuizDTO
             {
                 Quiz = _mapper.Map<QuizDTO>(quizEntity),
-                LikeStatus = 0, // Default value; adjust based on user action if needed
+                LikeStatus = likeStatus, // Default value; adjust based on user action if needed
                 Questions = quizEntity.Questions.Select(q => new FullQuestionDTO
                 {
                     Question = _mapper.Map<QuestionDTO>(q),

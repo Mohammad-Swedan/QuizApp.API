@@ -30,6 +30,9 @@ public partial class Quiz
     [Column(TypeName = "datetime")]
     public DateTime CreatedDate { get; set; }
 
+    public int Likes { get; set; } = 0;
+    public int DisLikes { get; set; } = 0;
+
     public bool IsDraft { get; set; }
 
     public bool IsTrusted { get; set; }

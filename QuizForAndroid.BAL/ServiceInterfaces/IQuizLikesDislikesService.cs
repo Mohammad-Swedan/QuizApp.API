@@ -13,5 +13,7 @@ namespace QuizForAndroid.BLL.ServiceInterfaces
         Task<int> GetLikesCountAsync(int quizId);
         Task<int> GetDislikesCountAsync(int quizId);
         Task<QuizLikesDislikesDTO> GetUserLikeDislikeAsync(int userId, int quizId);
+        Task AddLikeOrDislikeAsync(int quizId, int userId, bool likeOrDislike);
+
     }
 }

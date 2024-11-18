@@ -46,6 +46,9 @@ public partial class User
 
     public bool IsDoctor { get; set; }
 
+    public int TotalLikes { get; set; } = 0;
+    public int TotalDisLikes { get; set; } = 0;
+
     [ForeignKey("CollegeId")]
     [InverseProperty("Users")]
     public virtual College College { get; set; } = null!;

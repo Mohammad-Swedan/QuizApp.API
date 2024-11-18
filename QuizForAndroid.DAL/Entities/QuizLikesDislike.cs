@@ -18,6 +18,8 @@ public partial class QuizLikesDislike
     public int QuizId { get; set; }
 
     public bool IsLike { get; set; }
+    public DateTime CreatedDate { get; set; } = DateTime.Now;
+
 
     [ForeignKey("QuizId")]
     [InverseProperty("QuizLikesDislikes")]

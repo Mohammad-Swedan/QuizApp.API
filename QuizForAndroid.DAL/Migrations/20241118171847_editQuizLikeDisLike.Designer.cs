@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QuizForAndroid.DAL.Contexts;
 
@@ -11,9 +12,11 @@ using QuizForAndroid.DAL.Contexts;
 namespace QuizForAndroid.DAL.Migrations
 {
     [DbContext(typeof(QuizAppDbContext))]
-    partial class QuizAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241118171847_editQuizLikeDisLike")]
+    partial class editQuizLikeDisLike
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -243,9 +246,6 @@ namespace QuizForAndroid.DAL.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(1000)");
 
-                    b.Property<int>("DisLikes")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsDoctor")
                         .HasColumnType("bit");
 
@@ -254,9 +254,6 @@ namespace QuizForAndroid.DAL.Migrations
 
                     b.Property<bool>("IsTrusted")
                         .HasColumnType("bit");
-
-                    b.Property<int>("Likes")
-                        .HasColumnType("int");
 
                     b.Property<int>("MaterialId")
                         .HasColumnType("int")
@@ -491,12 +488,6 @@ namespace QuizForAndroid.DAL.Migrations
                     b.Property<int>("SpecializationId")
                         .HasColumnType("int")
                         .HasColumnName("SpecializationID");
-
-                    b.Property<int>("TotalDisLikes")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TotalLikes")
-                        .HasColumnType("int");
 
                     b.Property<int>("UniversityId")
                         .HasColumnType("int")

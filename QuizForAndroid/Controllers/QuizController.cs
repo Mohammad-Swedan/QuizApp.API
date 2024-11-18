@@ -218,7 +218,14 @@ namespace QuizForAndroid.API.Controllers
             /// <returns>ActionResult with full quiz data.</returns>
             try
             {
-                var fullQuiz = await _quizService.GetFullQuizByIdAsync(id);
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+
+                if (userIdClaim == null)
+                    return Unauthorized(new { message = "User ID not found in token." });
+
+                int userId = int.Parse(userIdClaim.Value);
+
+                var fullQuiz = await _quizService.GetFullQuizByIdAsync(id,userId);
                 if (fullQuiz == null)
                     return NotFound(new { message = $"Quiz with ID {id} not found." });
 
