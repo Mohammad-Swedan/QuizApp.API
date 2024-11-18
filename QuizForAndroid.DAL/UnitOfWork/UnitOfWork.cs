@@ -59,9 +59,9 @@ namespace QuizForAndroid.DAL.UnitOfWork
             return await _dbContext.SaveChangesAsync();
         }
 
-        public void BeginTransaction()
+        public async Task BeginTransactionAsync()
         {
-            _transaction = _dbContext.Database.BeginTransaction();
+            _transaction = await _dbContext.Database.BeginTransactionAsync();
         }
 
         public async Task CommitTransactionAsync()

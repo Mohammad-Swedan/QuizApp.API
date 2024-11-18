@@ -52,5 +52,16 @@ namespace QuizForAndroid.DAL.Repositories
                 .ToListAsync();
         }
 
+        public async Task<Quiz> GetFull(int quizId)
+        {
+            // Include Questions and Choices
+            var quizEntity = await _quizzes
+                .Include(q => q.Questions)
+                    .ThenInclude(q => q.Choices)
+                .FirstOrDefaultAsync(q => q.QuizId == quizId);
+
+            return quizEntity;
+        }
+
     }
 }

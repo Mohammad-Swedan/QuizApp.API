@@ -14,5 +14,8 @@ namespace QuizForAndroid.BLL.ServiceInterfaces
         Task<IEnumerable<QuizDTO>> GetQuizzesByWriterAsync(int writerId);
         //Task<IEnumerable<QuizDTO>> GetTopQuizzesAsync(int materialId, int count);
         Task<IEnumerable<QuizDTO>> GetQuizzesByStatusAsync(bool isDraft);
+
+        Task<FullQuizDTO> AddFullQuizAsync(FullQuizDTO model);
+        Task<FullQuizDTO> GetFullQuizByIdAsync(int quizId);
     }
 }

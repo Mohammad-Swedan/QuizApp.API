@@ -5,6 +5,7 @@ using QuizForAndroid.BLL.ServiceInterfaces;
 using QuizForAndroid.DAL.DTOs;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace QuizForAndroid.API.Controllers
 {
@@ -13,6 +14,7 @@ namespace QuizForAndroid.API.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class QuizController : ControllerBase
     {
         private readonly IQuizService _quizService;
@@ -91,7 +93,7 @@ namespace QuizForAndroid.API.Controllers
         [HttpPost(Name = "CreateQuiz")]
         [ProducesResponseType(typeof(QuizDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(object), StatusCodes.Status400BadRequest)]
-        [Authorize(Roles = "Admin, Editor")]
+        [Authorize(Roles = "Admin, SuperAdmin, Writer")]
         public async Task<IActionResult> CreateQuiz([FromBody] QuizDTO model)
         {
             /// <summary>
@@ -123,7 +125,7 @@ namespace QuizForAndroid.API.Controllers
         [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(object), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(object), StatusCodes.Status404NotFound)]
-        [Authorize(Roles = "Admin, Editor")]
+        [Authorize(Roles = "Admin, SuperAdmin, Writer")]
         public async Task<IActionResult> UpdateQuiz(int id, [FromBody] QuizDTO model)
         {
             /// <summary>
@@ -158,7 +160,7 @@ namespace QuizForAndroid.API.Controllers
         [HttpDelete("{id}", Name = "DeleteQuiz")]
         [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(object), StatusCodes.Status404NotFound)]
-        [Authorize(Roles = "Admin, Editor")]
+        [Authorize(Roles = "Admin, SuperAdmin, Writer")] // make sure that the quiz belong to the wirter before delete
         public async Task<IActionResult> DeleteQuiz(int id)
         {
             /// <summary>
@@ -181,33 +183,77 @@ namespace QuizForAndroid.API.Controllers
             }
         }
 
-        /// <summary>
-        /// Adds a full quiz with its questions and choices at once.
-        /// </summary>
-        /// <param name="model">The full quiz details, including questions and choices.</param>
-        /// <returns>The created full quiz.</returns>
-        /// <response code="201">Returns the created full quiz.</response>
-        /// <response code="400">If the creation fails due to invalid input or other errors.</response>
         [HttpPost("full-quiz", Name = "AddFullQuiz")]
         [ProducesResponseType(typeof(FullQuizDTO), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(object), StatusCodes.Status400BadRequest)]
-        [Authorize(Roles = "Admin, Editor")]
+        [Authorize(Roles = "Admin, SuperAdmin, Writer")]
         public async Task<IActionResult> AddFullQuiz([FromBody] FullQuizDTO model)
         {
             /// <summary>
-            /// Adds a full quiz with questions and choices.
+            /// Adds a full quiz with its questions and choices.
             /// </summary>
-            /// <param name="model">Full quiz data.</param>
+            /// <param name="model">The full quiz data.</param>
             /// <returns>ActionResult with created full quiz data.</returns>
             try
             {
-                var quiz = await _quizService.AddFullQuizAsync(model); // edit func name
-                return CreatedAtAction(nameof(GetQuizById), new { id = quiz.QuizID }, quiz);
+                var quiz = await _quizService.AddFullQuizAsync(model);
+                return CreatedAtAction(nameof(GetFullQuiz), new { id = quiz.Quiz.QuizID }, quiz);
             }
             catch (Exception ex)
             {
                 return BadRequest(new { error = ex.Message });
             }
         }
+
+
+        [HttpGet("full-quiz/{id}", Name = "GetFullQuiz")]
+        [ProducesResponseType(typeof(FullQuizDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(object), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetFullQuiz(int id)
+        {
+            /// <summary>
+            /// Retrieves a full quiz by its unique identifier, including its questions and choices.
+            /// </summary>
+            /// <param name="id">The unique identifier of the quiz.</param>
+            /// <returns>ActionResult with full quiz data.</returns>
+            try
+            {
+                var fullQuiz = await _quizService.GetFullQuizByIdAsync(id);
+                if (fullQuiz == null)
+                    return NotFound(new { message = $"Quiz with ID {id} not found." });
+
+                return Ok(fullQuiz);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+        }
+
+
+        /// <summary>
+        /// Get quizzes by college id
+        /// </summary>
+        /// <param name="collegeId">college id</param>
+        /// <returns> list of quizzes </returns>
+        //[HttpGet("by-college/{collegeId}", Name = "GetQuizzesByCollege")]
+        //[ProducesResponseType(typeof(IEnumerable<QuizDTO>), StatusCodes.Status200OK)]
+        //[ProducesResponseType(typeof(object), StatusCodes.Status404NotFound)]
+        //public async Task<IActionResult> GetQuizzesByCollege(int collegeId)
+        //{
+        //    try
+        //    {
+        //        var quizzes = await _quizService.GetByCollegeIdAsync(collegeId);
+        //        if (quizzes == null || !quizzes.Any())
+        //            return NotFound(new { message = $"No quizzes found for College ID {collegeId}." });
+
+        //        return Ok(quizzes);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(new { error = "An error occurred while processing your request." });
+        //    }
+        //}
+
     }
 }

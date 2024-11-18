@@ -32,7 +32,24 @@ namespace QuizForAndroid.BLL.MappingProfiles
                 CreateMap<User, GetUserDTO>().ReverseMap();
                 CreateMap<User, RegisterDTO>().ReverseMap();
 
-                // Additional mappings
+
+                // For FullQuizDto
+                CreateMap<Quiz, FullQuizDTO>()
+                    .ForMember(dest => dest.Quiz, opt => opt.MapFrom(src => src))
+                    .ForMember(dest => dest.Questions, opt => opt.MapFrom(src => src.Questions));
+
+                CreateMap<FullQuizDTO, Quiz>()
+                    .ForMember(dest => dest.Questions, opt => opt.MapFrom(src => src.Questions.Select(q => q.Question)));
+
+                // For FullQuestionDTO
+                CreateMap<Question, FullQuestionDTO>()
+                    .ForMember(dest => dest.Question, opt => opt.MapFrom(src => src))
+                    .ForMember(dest => dest.Choices, opt => opt.MapFrom(src => src.Choices));
+
+                CreateMap<FullQuestionDTO, Question>()
+                    .ForMember(dest => dest.Choices, opt => opt.MapFrom(src => src.Choices));
+
+
             }
         }
     }

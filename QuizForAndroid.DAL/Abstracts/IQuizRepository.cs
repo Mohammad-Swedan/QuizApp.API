@@ -15,5 +15,7 @@ namespace QuizForAndroid.DAL.Abstracts
         //Task<IEnumerable<Quiz>> GetTopQuizzesAsync(int materialId, int count);
         Task<IEnumerable<Quiz>> GetQuizzesByStatusAsync(bool isDraft);
         //Get Draft Quizzes 
+
+        public Task<Quiz> GetFull(int quizId);
     }
 }

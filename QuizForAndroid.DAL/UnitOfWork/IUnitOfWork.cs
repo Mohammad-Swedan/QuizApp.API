@@ -22,7 +22,7 @@ namespace QuizForAndroid.DAL.UnitOfWork
         IWriterApplicationRepository WriterApplications { get; }
 
         Task<int> SaveChangesAsync();
-        void BeginTransaction();
+        Task BeginTransactionAsync();
         Task CommitTransactionAsync();
         void RollbackTransaction();
     }

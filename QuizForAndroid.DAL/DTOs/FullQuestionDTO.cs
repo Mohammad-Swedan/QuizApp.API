@@ -11,11 +11,11 @@ namespace QuizForAndroid.DAL.DTOs
         /// <summary>
         /// The quiz details.
         /// </summary>
-        public QuestionDTO Quiz { get; set; }
+        public QuestionDTO Question { get; set; }
 
         /// <summary>
         /// The list of questions associated with the quiz.
         /// </summary>
-        public List<ChoiceDTO> choices { get; set; }
+        public List<ChoiceDTO> Choices { get; set; }
     }
 }
